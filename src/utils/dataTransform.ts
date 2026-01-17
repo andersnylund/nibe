@@ -71,3 +71,39 @@ export function getTemperatureData(data: AggregatedDataPoint[]) {
     Indoor: point.avgIndoorTemp,
   }));
 }
+
+/**
+ * Check which columns in the chart data are always zero
+ * Returns a set of column names that have all zero values
+ */
+export function getZeroColumns(chartData: Record<string, any>[]): Set<string> {
+  if (chartData.length === 0) {
+    return new Set();
+  }
+
+  const zeroColumns = new Set<string>();
+  const allColumns = new Set<string>();
+
+  // Get all column names (excluding period and date)
+  for (const point of chartData) {
+    for (const key of Object.keys(point)) {
+      if (key !== 'period' && key !== 'date') {
+        allColumns.add(key);
+      }
+    }
+  }
+
+  // Check each column to see if all values are zero
+  for (const column of allColumns) {
+    const hasNonZero = chartData.some((point) => {
+      const value = point[column];
+      return value !== undefined && value !== null && value !== 0;
+    });
+
+    if (!hasNonZero) {
+      zeroColumns.add(column);
+    }
+  }
+
+  return zeroColumns;
+}

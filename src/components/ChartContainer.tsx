@@ -18,6 +18,7 @@ import {
   getAdditionalHeaterData,
   getTemperatureData,
   formatPeriodLabel,
+  getZeroColumns,
 } from '../utils/dataTransform';
 import { AggregationType } from '../types/data';
 
@@ -37,6 +38,14 @@ const colors = {
 
 export function EnergyProductionChart({ data, aggregationType }: ChartContainerProps) {
   const chartData = getEnergyProductionData(data);
+  const zeroColumns = getZeroColumns(chartData);
+
+  const lineConfigs = [
+    { key: 'Heating', color: colors.heating },
+    { key: 'Hot Water', color: colors.hotWater },
+    { key: 'Pool', color: colors.pool },
+    { key: 'Cooling', color: colors.cooling },
+  ].filter((config) => !zeroColumns.has(config.key));
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
@@ -56,34 +65,16 @@ export function EnergyProductionChart({ data, aggregationType }: ChartContainerP
             labelFormatter={(value) => formatPeriodLabel(value as string, aggregationType)}
           />
           <Legend />
-          <Line
-            type="monotone"
-            dataKey="Heating"
-            stroke={colors.heating}
-            strokeWidth={2}
-            dot={{ r: 3 }}
-          />
-          <Line
-            type="monotone"
-            dataKey="Hot Water"
-            stroke={colors.hotWater}
-            strokeWidth={2}
-            dot={{ r: 3 }}
-          />
-          <Line
-            type="monotone"
-            dataKey="Pool"
-            stroke={colors.pool}
-            strokeWidth={2}
-            dot={{ r: 3 }}
-          />
-          <Line
-            type="monotone"
-            dataKey="Cooling"
-            stroke={colors.cooling}
-            strokeWidth={2}
-            dot={{ r: 3 }}
-          />
+          {lineConfigs.map((config) => (
+            <Line
+              key={config.key}
+              type="monotone"
+              dataKey={config.key}
+              stroke={config.color}
+              strokeWidth={2}
+              dot={{ r: 3 }}
+            />
+          ))}
         </LineChart>
       </ResponsiveContainer>
     </div>
@@ -92,6 +83,14 @@ export function EnergyProductionChart({ data, aggregationType }: ChartContainerP
 
 export function EnergyConsumptionChart({ data, aggregationType }: ChartContainerProps) {
   const chartData = getEnergyConsumptionData(data);
+  const zeroColumns = getZeroColumns(chartData);
+
+  const lineConfigs = [
+    { key: 'Heating', color: colors.heating },
+    { key: 'Hot Water', color: colors.hotWater },
+    { key: 'Pool', color: colors.pool },
+    { key: 'Cooling', color: colors.cooling },
+  ].filter((config) => !zeroColumns.has(config.key));
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
@@ -111,34 +110,16 @@ export function EnergyConsumptionChart({ data, aggregationType }: ChartContainer
             labelFormatter={(value) => formatPeriodLabel(value as string, aggregationType)}
           />
           <Legend />
-          <Line
-            type="monotone"
-            dataKey="Heating"
-            stroke={colors.heating}
-            strokeWidth={2}
-            dot={{ r: 3 }}
-          />
-          <Line
-            type="monotone"
-            dataKey="Hot Water"
-            stroke={colors.hotWater}
-            strokeWidth={2}
-            dot={{ r: 3 }}
-          />
-          <Line
-            type="monotone"
-            dataKey="Pool"
-            stroke={colors.pool}
-            strokeWidth={2}
-            dot={{ r: 3 }}
-          />
-          <Line
-            type="monotone"
-            dataKey="Cooling"
-            stroke={colors.cooling}
-            strokeWidth={2}
-            dot={{ r: 3 }}
-          />
+          {lineConfigs.map((config) => (
+            <Line
+              key={config.key}
+              type="monotone"
+              dataKey={config.key}
+              stroke={config.color}
+              strokeWidth={2}
+              dot={{ r: 3 }}
+            />
+          ))}
         </LineChart>
       </ResponsiveContainer>
     </div>
@@ -147,6 +128,14 @@ export function EnergyConsumptionChart({ data, aggregationType }: ChartContainer
 
 export function AdditionalHeaterChart({ data, aggregationType }: ChartContainerProps) {
   const chartData = getAdditionalHeaterData(data);
+  const zeroColumns = getZeroColumns(chartData);
+
+  const barConfigs = [
+    { key: 'Heating', color: colors.heating },
+    { key: 'Hot Water', color: colors.hotWater },
+    { key: 'Pool', color: colors.pool },
+    { key: 'Total', color: '#6b7280' },
+  ].filter((config) => !zeroColumns.has(config.key));
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
@@ -166,10 +155,9 @@ export function AdditionalHeaterChart({ data, aggregationType }: ChartContainerP
             labelFormatter={(value) => formatPeriodLabel(value as string, aggregationType)}
           />
           <Legend />
-          <Bar dataKey="Heating" fill={colors.heating} />
-          <Bar dataKey="Hot Water" fill={colors.hotWater} />
-          <Bar dataKey="Pool" fill={colors.pool} />
-          <Bar dataKey="Total" fill="#6b7280" />
+          {barConfigs.map((config) => (
+            <Bar key={config.key} dataKey={config.key} fill={config.color} />
+          ))}
         </BarChart>
       </ResponsiveContainer>
     </div>
@@ -178,6 +166,12 @@ export function AdditionalHeaterChart({ data, aggregationType }: ChartContainerP
 
 export function TemperatureChart({ data, aggregationType }: ChartContainerProps) {
   const chartData = getTemperatureData(data);
+  const zeroColumns = getZeroColumns(chartData);
+
+  const lineConfigs = [
+    { key: 'Outdoor', color: colors.outdoor, yAxisId: 'left', name: 'Outdoor Temp' },
+    { key: 'Indoor', color: colors.indoor, yAxisId: 'right', name: 'Indoor Temp' },
+  ].filter((config) => !zeroColumns.has(config.key));
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
@@ -192,34 +186,32 @@ export function TemperatureChart({ data, aggregationType }: ChartContainerProps)
             textAnchor="end"
             height={80}
           />
-          <YAxis yAxisId="left" label={{ value: 'Outdoor Temp (°C)', angle: -90, position: 'insideLeft' }} />
-          <YAxis
-            yAxisId="right"
-            orientation="right"
-            label={{ value: 'Indoor Temp (°C)', angle: 90, position: 'insideRight' }}
-          />
+          {!zeroColumns.has('Outdoor') && (
+            <YAxis yAxisId="left" label={{ value: 'Outdoor Temp (°C)', angle: -90, position: 'insideLeft' }} />
+          )}
+          {!zeroColumns.has('Indoor') && (
+            <YAxis
+              yAxisId="right"
+              orientation="right"
+              label={{ value: 'Indoor Temp (°C)', angle: 90, position: 'insideRight' }}
+            />
+          )}
           <Tooltip
             labelFormatter={(value) => formatPeriodLabel(value as string, aggregationType)}
           />
           <Legend />
-          <Line
-            yAxisId="left"
-            type="monotone"
-            dataKey="Outdoor"
-            stroke={colors.outdoor}
-            strokeWidth={2}
-            dot={{ r: 3 }}
-            name="Outdoor Temp"
-          />
-          <Line
-            yAxisId="right"
-            type="monotone"
-            dataKey="Indoor"
-            stroke={colors.indoor}
-            strokeWidth={2}
-            dot={{ r: 3 }}
-            name="Indoor Temp"
-          />
+          {lineConfigs.map((config) => (
+            <Line
+              key={config.key}
+              yAxisId={config.yAxisId}
+              type="monotone"
+              dataKey={config.key}
+              stroke={config.color}
+              strokeWidth={2}
+              dot={{ r: 3 }}
+              name={config.name}
+            />
+          ))}
         </ComposedChart>
       </ResponsiveContainer>
     </div>
