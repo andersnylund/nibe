@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import { NibeDataPoint, AggregationType } from '../types/data';
 import { aggregateData } from '../utils/dataAggregator';
 import { AggregationSelector } from './AggregationSelector';
@@ -11,11 +11,15 @@ import {
 
 interface DataVisualizerProps {
   data: NibeDataPoint[];
+  aggregationType: AggregationType;
+  onAggregationChange: (type: AggregationType) => void;
 }
 
-export function DataVisualizer({ data }: DataVisualizerProps) {
-  const [aggregationType, setAggregationType] =
-    useState<AggregationType>('monthly');
+export function DataVisualizer({
+  data,
+  aggregationType,
+  onAggregationChange,
+}: DataVisualizerProps) {
 
   const aggregatedData = useMemo(
     () => aggregateData(data, aggregationType),
@@ -27,7 +31,7 @@ export function DataVisualizer({ data }: DataVisualizerProps) {
       <div className="mb-6">
         <AggregationSelector
           aggregationType={aggregationType}
-          onAggregationChange={setAggregationType}
+          onAggregationChange={onAggregationChange}
         />
       </div>
 

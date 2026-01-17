@@ -1,17 +1,34 @@
 import { useState } from 'react';
-import { NibeDataPoint } from './types/data';
+import { NibeDataPoint, AggregationType } from './types/data';
 import { FileUpload } from './components/FileUpload';
 import { DataVisualizer } from './components/DataVisualizer';
+import {
+  saveData,
+  loadData,
+  clearData,
+  saveAggregationType,
+  loadAggregationType,
+} from './utils/storage';
 
 function App() {
-  const [data, setData] = useState<NibeDataPoint[] | null>(null);
+  const [data, setData] = useState<NibeDataPoint[] | null>(() => loadData());
+  const [aggregationType, setAggregationType] = useState<AggregationType>(
+    () => loadAggregationType(),
+  );
 
   const handleDataParsed = (parsedData: NibeDataPoint[]) => {
     setData(parsedData);
+    saveData(parsedData);
+  };
+
+  const handleAggregationChange = (type: AggregationType) => {
+    setAggregationType(type);
+    saveAggregationType(type);
   };
 
   const handleReset = () => {
     setData(null);
+    clearData();
   };
 
   return (
@@ -48,7 +65,11 @@ function App() {
                 {data[data.length - 1].date.toLocaleDateString()}.
               </p>
             </div>
-            <DataVisualizer data={data} />
+            <DataVisualizer
+              data={data}
+              aggregationType={aggregationType}
+              onAggregationChange={handleAggregationChange}
+            />
           </div>
         )}
       </main>
