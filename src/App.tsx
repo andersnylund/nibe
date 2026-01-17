@@ -1,7 +1,8 @@
-import { useState } from 'react';
-import { NibeDataPoint, AggregationType } from './types/data';
+import { useState, useMemo } from 'react';
+import { NibeDataPoint, AggregationType, DateRange } from './types/data';
 import { FileUpload } from './components/FileUpload';
 import { DataVisualizer } from './components/DataVisualizer';
+import { getDataDateBounds } from './utils/dateFilter';
 import {
   saveData,
   loadData,
@@ -16,9 +17,33 @@ function App() {
     () => loadAggregationType(),
   );
 
+  // Calculate date bounds from data
+  const dateBounds = useMemo(() => {
+    if (!data) return null;
+    return getDataDateBounds(data);
+  }, [data]);
+
+  // Initialize date range to full data span
+  const [dateRange, setDateRange] = useState<DateRange>(() => {
+    const initialData = loadData();
+    if (initialData) {
+      const bounds = getDataDateBounds(initialData);
+      if (bounds) {
+        return { startDate: bounds.minDate, endDate: bounds.maxDate };
+      }
+    }
+    return { startDate: null, endDate: null };
+  });
+
   const handleDataParsed = (parsedData: NibeDataPoint[]) => {
     setData(parsedData);
     saveData(parsedData);
+
+    // Reset date range to full span of new data
+    const bounds = getDataDateBounds(parsedData);
+    if (bounds) {
+      setDateRange({ startDate: bounds.minDate, endDate: bounds.maxDate });
+    }
   };
 
   const handleAggregationChange = (type: AggregationType) => {
@@ -26,9 +51,14 @@ function App() {
     saveAggregationType(type);
   };
 
+  const handleDateRangeChange = (range: DateRange) => {
+    setDateRange(range);
+  };
+
   const handleReset = () => {
     setData(null);
     clearData();
+    setDateRange({ startDate: null, endDate: null });
   };
 
   return (
@@ -69,6 +99,10 @@ function App() {
               data={data}
               aggregationType={aggregationType}
               onAggregationChange={handleAggregationChange}
+              dateRange={dateRange}
+              onDateRangeChange={handleDateRangeChange}
+              minDate={dateBounds?.minDate ?? new Date()}
+              maxDate={dateBounds?.maxDate ?? new Date()}
             />
           </div>
         )}

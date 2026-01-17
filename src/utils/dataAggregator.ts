@@ -2,6 +2,7 @@ import {
   format,
   getISOWeek,
   getYear,
+  startOfDay,
   startOfMonth,
   startOfWeek,
 } from 'date-fns';
@@ -25,7 +26,10 @@ export function aggregateData(
     let periodKey: string;
     let periodStart: Date;
 
-    if (aggregationType === 'weekly') {
+    if (aggregationType === 'daily') {
+      periodStart = startOfDay(point.date);
+      periodKey = format(periodStart, 'yyyy-MM-dd');
+    } else if (aggregationType === 'weekly') {
       periodStart = startOfWeek(point.date, { weekStartsOn: 1 }); // Monday as start
       const year = getYear(periodStart);
       const week = getISOWeek(periodStart);
@@ -47,9 +51,11 @@ export function aggregateData(
 
   for (const [period, points] of grouped.entries()) {
     const periodStart =
-      aggregationType === 'weekly'
-        ? startOfWeek(points[0].date, { weekStartsOn: 1 })
-        : startOfMonth(points[0].date);
+      aggregationType === 'daily'
+        ? startOfDay(points[0].date)
+        : aggregationType === 'weekly'
+          ? startOfWeek(points[0].date, { weekStartsOn: 1 })
+          : startOfMonth(points[0].date);
 
     // Calculate sums
     const heatingProduced = points.reduce(

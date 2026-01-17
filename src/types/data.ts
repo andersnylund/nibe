@@ -19,10 +19,10 @@ export interface NibeDataPoint {
 }
 
 /**
- * Aggregated data point for weekly or monthly views
+ * Aggregated data point for daily, weekly or monthly views
  */
 export interface AggregatedDataPoint {
-  period: string; // ISO week string (e.g., "2025-W12") or month string (e.g., "2025-03")
+  period: string; // Daily: "2025-01-15", Weekly: "2025-W12", Monthly: "2025-03"
   date: Date; // Start date of the period
   // Produced thermal energy (sums)
   heatingProduced: number;
@@ -51,4 +51,12 @@ export interface AggregatedDataPoint {
 /**
  * Aggregation type for grouping data
  */
-export type AggregationType = 'weekly' | 'monthly';
+export type AggregationType = 'daily' | 'weekly' | 'monthly';
+
+/**
+ * Date range for filtering data
+ */
+export interface DateRange {
+  startDate: Date | null;
+  endDate: Date | null;
+}

@@ -5,9 +5,17 @@ import { AggregatedDataPoint } from '../types/data';
  */
 export function formatPeriodLabel(
   period: string,
-  aggregationType: 'weekly' | 'monthly',
+  aggregationType: 'daily' | 'weekly' | 'monthly',
 ): string {
-  if (aggregationType === 'weekly') {
+  if (aggregationType === 'daily') {
+    // Format: "2025-01-15" -> "Jan 15, 2025"
+    const date = new Date(period);
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
+  } else if (aggregationType === 'weekly') {
     // Format: "2025-W12" -> "Week 12, 2025"
     const match = period.match(/^(\d{4})-W(\d{2})$/);
     if (match) {

@@ -45,7 +45,7 @@ export function saveAggregationType(type: AggregationType): void {
 
 export function loadAggregationType(): AggregationType {
   const stored = localStorage.getItem(AGGREGATION_KEY);
-  if (stored === 'weekly' || stored === 'monthly') {
+  if (stored === 'daily' || stored === 'weekly' || stored === 'monthly') {
     return stored;
   }
   return 'monthly';
