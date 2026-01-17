@@ -48,6 +48,7 @@ export function EnergyProductionChart({
   ].filter((config) => !zeroColumns.has(config.key));
 
   const showOutdoor = !zeroColumns.has('Outdoor');
+  const showCOP = !zeroColumns.has('COP');
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
@@ -63,8 +64,8 @@ export function EnergyProductionChart({
             height={80}
           />
           <YAxis yAxisId="left" />
-          {showOutdoor && (
-            <YAxis yAxisId="right" orientation="right" unit="°C" />
+          {(showOutdoor || showCOP) && (
+            <YAxis yAxisId="right" orientation="right" />
           )}
           <Tooltip
             labelFormatter={(value) =>
@@ -96,6 +97,17 @@ export function EnergyProductionChart({
               strokeWidth={2}
               dot={{ r: 3 }}
               name="Outdoor Temp"
+            />
+          )}
+          {showCOP && (
+            <Line
+              yAxisId="right"
+              type="monotone"
+              dataKey="COP"
+              stroke="#f97316"
+              strokeWidth={2}
+              dot={{ r: 3 }}
+              name="COP"
             />
           )}
         </ComposedChart>

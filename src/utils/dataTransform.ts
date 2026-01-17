@@ -33,6 +33,7 @@ export function getEnergyProductionData(data: AggregatedDataPoint[]) {
     Pool: point.poolProduced,
     Cooling: point.coolingProduced,
     Outdoor: point.avgOutdoorTemp,
+    COP: point.cop,
   }));
 }
 
