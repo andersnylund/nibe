@@ -11,12 +11,21 @@ interface StatCardProps {
   color?: string;
 }
 
-function StatCard({ title, value, subtitle, color = 'text-gray-900' }: StatCardProps) {
+function StatCard({
+  title,
+  value,
+  subtitle,
+  color = 'text-gray-900',
+}: StatCardProps) {
   return (
     <div className="bg-white rounded-lg shadow-md p-4">
       <h4 className="text-sm font-medium text-gray-500">{title}</h4>
       <p className={`text-2xl font-bold ${color}`}>{value}</p>
-      {subtitle && <p className="text-xs text-gray-400 mt-1">{subtitle}</p>}
+      {subtitle && (
+        <p className="text-xs text-gray-400 mt-1 whitespace-nowrap">
+          {subtitle}
+        </p>
+      )}
     </div>
   );
 }
@@ -63,13 +72,13 @@ export function StatsSummary({ data }: StatsSummaryProps) {
         <StatCard
           title="Total Energy Produced"
           value={`${formatNumber(totalProduced)} kWh`}
-          subtitle={`Heating: ${formatNumber(heatingProduced)} / Hot Water: ${formatNumber(hotWaterProduced)}`}
+          subtitle={`Heating: ${formatNumber(heatingProduced)} | HW: ${formatNumber(hotWaterProduced)}`}
           color="text-green-600"
         />
         <StatCard
           title="Total Energy Consumed"
           value={`${formatNumber(totalConsumed)} kWh`}
-          subtitle={`Heating: ${formatNumber(heatingConsumed)} / Hot Water: ${formatNumber(hotWaterConsumed)}`}
+          subtitle={`Heating: ${formatNumber(heatingConsumed)} | HW: ${formatNumber(hotWaterConsumed)}`}
           color="text-blue-600"
         />
         <StatCard

@@ -51,67 +51,77 @@ export function EnergyProductionChart({
   const showCOP = !zeroColumns.has('COP');
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
+    <div className="bg-white rounded-lg shadow-md p-6 pb-10 overflow-visible">
       <h3 className="text-xl font-semibold mb-4">Energy Production (kWh)</h3>
-      <ResponsiveContainer width="100%" height={300}>
-        <ComposedChart data={chartData} syncId="nibe-charts">
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis
-            dataKey="period"
-            tickFormatter={(value) => formatPeriodLabel(value, aggregationType)}
-            angle={-45}
-            textAnchor="end"
-            height={80}
-          />
-          <YAxis yAxisId="left" />
-          {(showOutdoor || showCOP) && (
-            <YAxis yAxisId="right" orientation="right" />
-          )}
-          <Tooltip
-            labelFormatter={(value) =>
-              formatPeriodLabel(value as string, aggregationType)
-            }
-            formatter={(value: number, name: string) => [
-              Math.round(value * 100) / 100,
-              name === 'Outdoor' ? 'Outdoor Temp' : name,
-            ]}
-          />
-          <Legend verticalAlign="top" height={36} />
-          {lineConfigs.map((config) => (
-            <Line
-              key={config.key}
-              yAxisId="left"
-              type="monotone"
-              dataKey={config.key}
-              stroke={config.color}
-              strokeWidth={2}
-              dot={{ r: 3 }}
+      <div className="[&_svg]:overflow-visible">
+        <ResponsiveContainer width="100%" height={300}>
+          <ComposedChart
+            data={chartData}
+            syncId="nibe-charts"
+            margin={{ left: 35, bottom: 5 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis
+              dataKey="period"
+              tickFormatter={(value) =>
+                formatPeriodLabel(value, aggregationType)
+              }
+              angle={-45}
+              textAnchor="end"
+              height={80}
+              tickMargin={5}
+              interval="preserveStartEnd"
             />
-          ))}
-          {showOutdoor && (
-            <Line
-              yAxisId="right"
-              type="monotone"
-              dataKey="Outdoor"
-              stroke={colors.outdoor}
-              strokeWidth={2}
-              dot={{ r: 3 }}
-              name="Outdoor Temp"
+            <YAxis yAxisId="left" />
+            {(showOutdoor || showCOP) && (
+              <YAxis yAxisId="right" orientation="right" />
+            )}
+            <Tooltip
+              labelFormatter={(value) =>
+                formatPeriodLabel(value as string, aggregationType)
+              }
+              formatter={(value: number, name: string) => [
+                Math.round(value * 100) / 100,
+                name === 'Outdoor' ? 'Outdoor Temp' : name,
+              ]}
             />
-          )}
-          {showCOP && (
-            <Line
-              yAxisId="right"
-              type="monotone"
-              dataKey="COP"
-              stroke="#f97316"
-              strokeWidth={2}
-              dot={{ r: 3 }}
-              name="COP"
-            />
-          )}
-        </ComposedChart>
-      </ResponsiveContainer>
+            <Legend verticalAlign="top" wrapperStyle={{ paddingBottom: 10 }} />
+            {lineConfigs.map((config) => (
+              <Line
+                key={config.key}
+                yAxisId="left"
+                type="monotone"
+                dataKey={config.key}
+                stroke={config.color}
+                strokeWidth={2}
+                dot={{ r: 3 }}
+              />
+            ))}
+            {showOutdoor && (
+              <Line
+                yAxisId="right"
+                type="monotone"
+                dataKey="Outdoor"
+                stroke={colors.outdoor}
+                strokeWidth={2}
+                dot={{ r: 3 }}
+                name="Outdoor Temp"
+              />
+            )}
+            {showCOP && (
+              <Line
+                yAxisId="right"
+                type="monotone"
+                dataKey="COP"
+                stroke="#f97316"
+                strokeWidth={2}
+                dot={{ r: 3 }}
+                name="COP"
+              />
+            )}
+          </ComposedChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 }
@@ -133,56 +143,66 @@ export function EnergyConsumptionChart({
   const showOutdoor = !zeroColumns.has('Outdoor');
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
+    <div className="bg-white rounded-lg shadow-md p-6 pb-10 overflow-visible">
       <h3 className="text-xl font-semibold mb-4">Energy Consumption (kWh)</h3>
-      <ResponsiveContainer width="100%" height={300}>
-        <ComposedChart data={chartData} syncId="nibe-charts">
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis
-            dataKey="period"
-            tickFormatter={(value) => formatPeriodLabel(value, aggregationType)}
-            angle={-45}
-            textAnchor="end"
-            height={80}
-          />
-          <YAxis yAxisId="left" />
-          {showOutdoor && (
-            <YAxis yAxisId="right" orientation="right" unit="°C" />
-          )}
-          <Tooltip
-            labelFormatter={(value) =>
-              formatPeriodLabel(value as string, aggregationType)
-            }
-            formatter={(value: number, name: string) => [
-              Math.round(value * 100) / 100,
-              name === 'Outdoor' ? 'Outdoor Temp' : name,
-            ]}
-          />
-          <Legend verticalAlign="top" height={36} />
-          {lineConfigs.map((config) => (
-            <Line
-              key={config.key}
-              yAxisId="left"
-              type="monotone"
-              dataKey={config.key}
-              stroke={config.color}
-              strokeWidth={2}
-              dot={{ r: 3 }}
+      <div className="[&_svg]:overflow-visible">
+        <ResponsiveContainer width="100%" height={300}>
+          <ComposedChart
+            data={chartData}
+            syncId="nibe-charts"
+            margin={{ left: 35, bottom: 5 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis
+              dataKey="period"
+              tickFormatter={(value) =>
+                formatPeriodLabel(value, aggregationType)
+              }
+              angle={-45}
+              textAnchor="end"
+              height={80}
+              tickMargin={5}
+              interval="preserveStartEnd"
             />
-          ))}
-          {showOutdoor && (
-            <Line
-              yAxisId="right"
-              type="monotone"
-              dataKey="Outdoor"
-              stroke={colors.outdoor}
-              strokeWidth={2}
-              dot={{ r: 3 }}
-              name="Outdoor Temp"
+            <YAxis yAxisId="left" />
+            {showOutdoor && (
+              <YAxis yAxisId="right" orientation="right" unit="°C" />
+            )}
+            <Tooltip
+              labelFormatter={(value) =>
+                formatPeriodLabel(value as string, aggregationType)
+              }
+              formatter={(value: number, name: string) => [
+                Math.round(value * 100) / 100,
+                name === 'Outdoor' ? 'Outdoor Temp' : name,
+              ]}
             />
-          )}
-        </ComposedChart>
-      </ResponsiveContainer>
+            <Legend verticalAlign="top" wrapperStyle={{ paddingBottom: 10 }} />
+            {lineConfigs.map((config) => (
+              <Line
+                key={config.key}
+                yAxisId="left"
+                type="monotone"
+                dataKey={config.key}
+                stroke={config.color}
+                strokeWidth={2}
+                dot={{ r: 3 }}
+              />
+            ))}
+            {showOutdoor && (
+              <Line
+                yAxisId="right"
+                type="monotone"
+                dataKey="Outdoor"
+                stroke={colors.outdoor}
+                strokeWidth={2}
+                dot={{ r: 3 }}
+                name="Outdoor Temp"
+              />
+            )}
+          </ComposedChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 }
@@ -204,55 +224,65 @@ export function AdditionalHeaterChart({
   const showOutdoor = !zeroColumns.has('Outdoor');
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
+    <div className="bg-white rounded-lg shadow-md p-6 pb-10 overflow-visible">
       <h3 className="text-xl font-semibold mb-4">
         Additional Heater Usage (kWh)
       </h3>
-      <ResponsiveContainer width="100%" height={300}>
-        <ComposedChart data={chartData} syncId="nibe-charts">
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis
-            dataKey="period"
-            tickFormatter={(value) => formatPeriodLabel(value, aggregationType)}
-            angle={-45}
-            textAnchor="end"
-            height={80}
-          />
-          <YAxis yAxisId="left" />
-          {showOutdoor && (
-            <YAxis yAxisId="right" orientation="right" unit="°C" />
-          )}
-          <Tooltip
-            labelFormatter={(value) =>
-              formatPeriodLabel(value as string, aggregationType)
-            }
-            formatter={(value: number, name: string) => [
-              Math.round(value * 100) / 100,
-              name === 'Outdoor' ? 'Outdoor Temp' : name,
-            ]}
-          />
-          <Legend verticalAlign="top" height={36} />
-          {barConfigs.map((config) => (
-            <Bar
-              key={config.key}
-              yAxisId="left"
-              dataKey={config.key}
-              fill={config.color}
+      <div className="[&_svg]:overflow-visible">
+        <ResponsiveContainer width="100%" height={300}>
+          <ComposedChart
+            data={chartData}
+            syncId="nibe-charts"
+            margin={{ left: 35, bottom: 5 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis
+              dataKey="period"
+              tickFormatter={(value) =>
+                formatPeriodLabel(value, aggregationType)
+              }
+              angle={-45}
+              textAnchor="end"
+              height={80}
+              tickMargin={5}
+              interval="preserveStartEnd"
             />
-          ))}
-          {showOutdoor && (
-            <Line
-              yAxisId="right"
-              type="monotone"
-              dataKey="Outdoor"
-              stroke={colors.outdoor}
-              strokeWidth={2}
-              dot={{ r: 3 }}
-              name="Outdoor Temp"
+            <YAxis yAxisId="left" />
+            {showOutdoor && (
+              <YAxis yAxisId="right" orientation="right" unit="°C" />
+            )}
+            <Tooltip
+              labelFormatter={(value) =>
+                formatPeriodLabel(value as string, aggregationType)
+              }
+              formatter={(value: number, name: string) => [
+                Math.round(value * 100) / 100,
+                name === 'Outdoor' ? 'Outdoor Temp' : name,
+              ]}
             />
-          )}
-        </ComposedChart>
-      </ResponsiveContainer>
+            <Legend verticalAlign="top" wrapperStyle={{ paddingBottom: 10 }} />
+            {barConfigs.map((config) => (
+              <Bar
+                key={config.key}
+                yAxisId="left"
+                dataKey={config.key}
+                fill={config.color}
+              />
+            ))}
+            {showOutdoor && (
+              <Line
+                yAxisId="right"
+                type="monotone"
+                dataKey="Outdoor"
+                stroke={colors.outdoor}
+                strokeWidth={2}
+                dot={{ r: 3 }}
+                name="Outdoor Temp"
+              />
+            )}
+          </ComposedChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 }
@@ -280,43 +310,53 @@ export function TemperatureChart({
   ].filter((config) => !zeroColumns.has(config.key));
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
+    <div className="bg-white rounded-lg shadow-md p-6 pb-10 overflow-visible">
       <h3 className="text-xl font-semibold mb-4">Temperature Trends (°C)</h3>
-      <ResponsiveContainer width="100%" height={300}>
-        <ComposedChart data={chartData} syncId="nibe-charts">
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis
-            dataKey="period"
-            tickFormatter={(value) => formatPeriodLabel(value, aggregationType)}
-            angle={-45}
-            textAnchor="end"
-            height={80}
-          />
-          {!zeroColumns.has('Outdoor') && <YAxis yAxisId="left" />}
-          {!zeroColumns.has('Indoor') && (
-            <YAxis yAxisId="right" orientation="right" />
-          )}
-          <Tooltip
-            labelFormatter={(value) =>
-              formatPeriodLabel(value as string, aggregationType)
-            }
-            formatter={(value: number) => Math.round(value * 100) / 100}
-          />
-          <Legend verticalAlign="top" height={36} />
-          {lineConfigs.map((config) => (
-            <Line
-              key={config.key}
-              yAxisId={config.yAxisId}
-              type="monotone"
-              dataKey={config.key}
-              stroke={config.color}
-              strokeWidth={2}
-              dot={{ r: 3 }}
-              name={config.name}
+      <div className="[&_svg]:overflow-visible">
+        <ResponsiveContainer width="100%" height={300}>
+          <ComposedChart
+            data={chartData}
+            syncId="nibe-charts"
+            margin={{ left: 35, bottom: 5 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis
+              dataKey="period"
+              tickFormatter={(value) =>
+                formatPeriodLabel(value, aggregationType)
+              }
+              angle={-45}
+              textAnchor="end"
+              height={80}
+              tickMargin={5}
+              interval="preserveStartEnd"
             />
-          ))}
-        </ComposedChart>
-      </ResponsiveContainer>
+            {!zeroColumns.has('Outdoor') && <YAxis yAxisId="left" />}
+            {!zeroColumns.has('Indoor') && (
+              <YAxis yAxisId="right" orientation="right" />
+            )}
+            <Tooltip
+              labelFormatter={(value) =>
+                formatPeriodLabel(value as string, aggregationType)
+              }
+              formatter={(value: number) => Math.round(value * 100) / 100}
+            />
+            <Legend verticalAlign="top" wrapperStyle={{ paddingBottom: 10 }} />
+            {lineConfigs.map((config) => (
+              <Line
+                key={config.key}
+                yAxisId={config.yAxisId}
+                type="monotone"
+                dataKey={config.key}
+                stroke={config.color}
+                strokeWidth={2}
+                dot={{ r: 3 }}
+                name={config.name}
+              />
+            ))}
+          </ComposedChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 }
