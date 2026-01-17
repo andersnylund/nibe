@@ -1,31 +1,28 @@
 import { AggregatedDataPoint } from '../types/data';
+import { formatDateShort, formatMonthYear, formatWeekLabel } from './locale';
 
 /**
- * Format period label for display
+ * Format period label for display using user's locale
  */
 export function formatPeriodLabel(
   period: string,
   aggregationType: 'daily' | 'weekly' | 'monthly',
 ): string {
   if (aggregationType === 'daily') {
-    // Format: "2025-01-15" -> "Jan 15, 2025"
+    // Format: "2025-01-15" -> "15.1.2025" (Finnish) or locale-appropriate
     const date = new Date(period);
-    return date.toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-    });
+    return formatDateShort(date);
   } else if (aggregationType === 'weekly') {
-    // Format: "2025-W12" -> "Week 12, 2025"
+    // Format: "2025-W12" -> "Viikko 12, 2025" (Finnish) or locale-appropriate
     const match = period.match(/^(\d{4})-W(\d{2})$/);
     if (match) {
-      return `Week ${parseInt(match[2])}, ${match[1]}`;
+      return formatWeekLabel(parseInt(match[2]), match[1]);
     }
     return period;
   } else {
-    // Format: "2025-03" -> "March 2025"
+    // Format: "2025-03" -> "maaliskuu 2025" (Finnish) or locale-appropriate
     const date = new Date(period + '-01');
-    return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    return formatMonthYear(date);
   }
 }
 

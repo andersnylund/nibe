@@ -1,5 +1,5 @@
 import { AggregationType, DateRange } from '../types/data';
-import { differenceInDays } from 'date-fns';
+import { differenceInDays, subMonths } from 'date-fns';
 
 const MAX_DAILY_DAYS = 90;
 
@@ -7,12 +7,16 @@ interface AggregationSelectorProps {
   aggregationType: AggregationType;
   onAggregationChange: (type: AggregationType) => void;
   dateRange: DateRange;
+  onDateRangeChange: (range: DateRange) => void;
+  maxDate: Date;
 }
 
 export function AggregationSelector({
   aggregationType,
   onAggregationChange,
   dateRange,
+  onDateRangeChange,
+  maxDate,
 }: AggregationSelectorProps) {
   const rangeDays =
     dateRange.startDate && dateRange.endDate
@@ -21,57 +25,82 @@ export function AggregationSelector({
 
   const isDailyDisabled = rangeDays > MAX_DAILY_DAYS;
 
+  const handleTimeRangeSelect = (months: number) => {
+    const endDate = maxDate;
+    const startDate = subMonths(endDate, months);
+    onDateRangeChange({ startDate, endDate });
+  };
+
+  const timeRangeButtons = [
+    { label: '1M', months: 1 },
+    { label: '3M', months: 3 },
+    { label: '12M', months: 12 },
+  ];
+
   return (
-    <div className="flex gap-2">
-      <div className="relative group">
+    <div className="flex gap-4">
+      <div className="flex gap-2">
+        {timeRangeButtons.map(({ label, months }) => (
+          <button
+            key={label}
+            onClick={() => handleTimeRangeSelect(months)}
+            className="px-3 py-2 rounded-md font-medium transition-colors bg-gray-200 text-gray-700 hover:bg-gray-300"
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+      <div className="flex gap-2">
+        <div className="relative group">
+          <button
+            onClick={() => !isDailyDisabled && onAggregationChange('daily')}
+            disabled={isDailyDisabled}
+            className={`
+              px-4 py-2 rounded-md font-medium transition-colors
+              ${
+                aggregationType === 'daily'
+                  ? 'bg-blue-500 text-white'
+                  : isDailyDisabled
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }
+            `}
+          >
+            Daily
+          </button>
+          {isDailyDisabled && (
+            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-gray-800 text-white text-xs rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+              Select a range of {MAX_DAILY_DAYS} days or less
+            </div>
+          )}
+        </div>
         <button
-          onClick={() => !isDailyDisabled && onAggregationChange('daily')}
-          disabled={isDailyDisabled}
+          onClick={() => onAggregationChange('weekly')}
           className={`
             px-4 py-2 rounded-md font-medium transition-colors
             ${
-              aggregationType === 'daily'
+              aggregationType === 'weekly'
                 ? 'bg-blue-500 text-white'
-                : isDailyDisabled
-                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
             }
           `}
         >
-          Daily
+          Weekly
         </button>
-        {isDailyDisabled && (
-          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-gray-800 text-white text-xs rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-            Select a range of {MAX_DAILY_DAYS} days or less
-          </div>
-        )}
+        <button
+          onClick={() => onAggregationChange('monthly')}
+          className={`
+            px-4 py-2 rounded-md font-medium transition-colors
+            ${
+              aggregationType === 'monthly'
+                ? 'bg-blue-500 text-white'
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            }
+          `}
+        >
+          Monthly
+        </button>
       </div>
-      <button
-        onClick={() => onAggregationChange('weekly')}
-        className={`
-          px-4 py-2 rounded-md font-medium transition-colors
-          ${
-            aggregationType === 'weekly'
-              ? 'bg-blue-500 text-white'
-              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-          }
-        `}
-      >
-        Weekly
-      </button>
-      <button
-        onClick={() => onAggregationChange('monthly')}
-        className={`
-          px-4 py-2 rounded-md font-medium transition-colors
-          ${
-            aggregationType === 'monthly'
-              ? 'bg-blue-500 text-white'
-              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-          }
-        `}
-      >
-        Monthly
-      </button>
     </div>
   );
 }

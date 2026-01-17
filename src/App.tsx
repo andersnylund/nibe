@@ -3,6 +3,7 @@ import { NibeDataPoint, AggregationType, DateRange } from './types/data';
 import { FileUpload } from './components/FileUpload';
 import { DataVisualizer } from './components/DataVisualizer';
 import { getDataDateBounds } from './utils/dateFilter';
+import { formatDate } from './utils/locale';
 import {
   saveData,
   loadData,
@@ -91,8 +92,8 @@ function App() {
             <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-md">
               <p className="text-blue-800 text-sm">
                 Loaded {data.length} data points. Data spans from{' '}
-                {data[0].date.toLocaleDateString()} to{' '}
-                {data[data.length - 1].date.toLocaleDateString()}.
+                {formatDate(data[0].date)} to{' '}
+                {formatDate(data[data.length - 1].date)}.
               </p>
             </div>
             <DataVisualizer

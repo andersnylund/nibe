@@ -61,6 +61,8 @@ export function DataVisualizer({
           aggregationType={aggregationType}
           onAggregationChange={onAggregationChange}
           dateRange={dateRange}
+          onDateRangeChange={onDateRangeChange}
+          maxDate={maxDate}
         />
         <DateRangeSelector
           dateRange={dateRange}
