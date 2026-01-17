@@ -8,6 +8,7 @@ import {
   AdditionalHeaterChart,
   TemperatureChart,
 } from './ChartContainer';
+import { StatsSummary } from './StatsSummary';
 
 interface DataVisualizerProps {
   data: NibeDataPoint[];
@@ -53,6 +54,8 @@ export function DataVisualizer({
           aggregationType={aggregationType}
         />
       </div>
+
+      <StatsSummary data={aggregatedData} />
     </div>
   );
 }
