@@ -53,7 +53,7 @@ export function EnergyProductionChart({
     <div className="bg-white rounded-lg shadow-md p-6">
       <h3 className="text-xl font-semibold mb-4">Energy Production (kWh)</h3>
       <ResponsiveContainer width="100%" height={300}>
-        <ComposedChart data={chartData}>
+        <ComposedChart data={chartData} syncId="nibe-charts">
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
             dataKey="period"
@@ -124,7 +124,7 @@ export function EnergyConsumptionChart({
     <div className="bg-white rounded-lg shadow-md p-6">
       <h3 className="text-xl font-semibold mb-4">Energy Consumption (kWh)</h3>
       <ResponsiveContainer width="100%" height={300}>
-        <ComposedChart data={chartData}>
+        <ComposedChart data={chartData} syncId="nibe-charts">
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
             dataKey="period"
@@ -197,7 +197,7 @@ export function AdditionalHeaterChart({
         Additional Heater Usage (kWh)
       </h3>
       <ResponsiveContainer width="100%" height={300}>
-        <ComposedChart data={chartData}>
+        <ComposedChart data={chartData} syncId="nibe-charts">
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
             dataKey="period"
@@ -271,7 +271,7 @@ export function TemperatureChart({
     <div className="bg-white rounded-lg shadow-md p-6">
       <h3 className="text-xl font-semibold mb-4">Temperature Trends (°C)</h3>
       <ResponsiveContainer width="100%" height={300}>
-        <ComposedChart data={chartData}>
+        <ComposedChart data={chartData} syncId="nibe-charts">
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
             dataKey="period"
