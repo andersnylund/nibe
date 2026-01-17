@@ -44,6 +44,17 @@ export async function parseNibeCsv(file: File): Promise<NibeDataPoint[]> {
             };
 
             // Extract column values - handle quoted column names
+            // Find temperature columns with flexible matching (handle encoding issues)
+            const outdoorTempKey = Object.keys(row).find(key => 
+              key.toLowerCase().includes('outdoor') && key.toLowerCase().includes('temp')
+            );
+            const indoorTempKey = Object.keys(row).find(key => 
+              key.toLowerCase().includes('indoor') && key.toLowerCase().includes('temp')
+            );
+            const outdoorTempRaw = outdoorTempKey ? row[outdoorTempKey] : row['Outdoor temp [°C]'];
+            const indoorTempRaw = indoorTempKey ? row[indoorTempKey] : row['Indoor temp [°C]'];
+            const outdoorTempParsed = parseNumber(outdoorTempRaw);
+            const indoorTempParsed = parseNumber(indoorTempRaw);
             const dataPoint: NibeDataPoint = {
               date,
               heatingProduced: parseNumber(
@@ -73,8 +84,8 @@ export async function parseNibeCsv(file: File): Promise<NibeDataPoint[]> {
               heatingAddition: parseNumber(row['Heating Addition [kWh]']),
               hotWaterAddition: parseNumber(row['Hot water Addition [kWh]']),
               poolAddition: parseNumber(row['Pool Addition [kWh]']),
-              outdoorTemp: parseNumber(row['Outdoor temp [°C]']),
-              indoorTemp: parseNumber(row['Indoor temp [°C]']),
+              outdoorTemp: outdoorTempParsed,
+              indoorTemp: indoorTempParsed,
             };
 
             dataPoints.push(dataPoint);

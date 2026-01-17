@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { NibeDataPoint } from '../types/data';
 import { parseNibeCsv } from '../utils/csvParser';
 
