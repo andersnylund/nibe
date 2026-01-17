@@ -63,8 +63,9 @@ export function EnergyProductionChart({ data, aggregationType }: ChartContainerP
           <YAxis />
           <Tooltip
             labelFormatter={(value) => formatPeriodLabel(value as string, aggregationType)}
+            formatter={(value: number) => Math.round(value * 100) / 100}
           />
-          <Legend />
+          <Legend verticalAlign="top" height={36} />
           {lineConfigs.map((config) => (
             <Line
               key={config.key}
@@ -108,8 +109,9 @@ export function EnergyConsumptionChart({ data, aggregationType }: ChartContainer
           <YAxis />
           <Tooltip
             labelFormatter={(value) => formatPeriodLabel(value as string, aggregationType)}
+            formatter={(value: number) => Math.round(value * 100) / 100}
           />
-          <Legend />
+          <Legend verticalAlign="top" height={36} />
           {lineConfigs.map((config) => (
             <Line
               key={config.key}
@@ -153,8 +155,9 @@ export function AdditionalHeaterChart({ data, aggregationType }: ChartContainerP
           <YAxis />
           <Tooltip
             labelFormatter={(value) => formatPeriodLabel(value as string, aggregationType)}
+            formatter={(value: number) => Math.round(value * 100) / 100}
           />
-          <Legend />
+          <Legend verticalAlign="top" height={36} />
           {barConfigs.map((config) => (
             <Bar key={config.key} dataKey={config.key} fill={config.color} />
           ))}
@@ -187,19 +190,19 @@ export function TemperatureChart({ data, aggregationType }: ChartContainerProps)
             height={80}
           />
           {!zeroColumns.has('Outdoor') && (
-            <YAxis yAxisId="left" label={{ value: 'Outdoor Temp (°C)', angle: -90, position: 'insideLeft' }} />
+            <YAxis yAxisId="left" />
           )}
           {!zeroColumns.has('Indoor') && (
             <YAxis
               yAxisId="right"
               orientation="right"
-              label={{ value: 'Indoor Temp (°C)', angle: 90, position: 'insideRight' }}
             />
           )}
           <Tooltip
             labelFormatter={(value) => formatPeriodLabel(value as string, aggregationType)}
+            formatter={(value: number) => Math.round(value * 100) / 100}
           />
-          <Legend />
+          <Legend verticalAlign="top" height={36} />
           {lineConfigs.map((config) => (
             <Line
               key={config.key}
