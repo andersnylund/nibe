@@ -14,11 +14,12 @@ interface DataVisualizerProps {
 }
 
 export function DataVisualizer({ data }: DataVisualizerProps) {
-  const [aggregationType, setAggregationType] = useState<AggregationType>('monthly');
+  const [aggregationType, setAggregationType] =
+    useState<AggregationType>('monthly');
 
   const aggregatedData = useMemo(
     () => aggregateData(data, aggregationType),
-    [data, aggregationType]
+    [data, aggregationType],
   );
 
   return (
@@ -31,10 +32,22 @@ export function DataVisualizer({ data }: DataVisualizerProps) {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <EnergyProductionChart data={aggregatedData} aggregationType={aggregationType} />
-        <EnergyConsumptionChart data={aggregatedData} aggregationType={aggregationType} />
-        <AdditionalHeaterChart data={aggregatedData} aggregationType={aggregationType} />
-        <TemperatureChart data={aggregatedData} aggregationType={aggregationType} />
+        <EnergyProductionChart
+          data={aggregatedData}
+          aggregationType={aggregationType}
+        />
+        <EnergyConsumptionChart
+          data={aggregatedData}
+          aggregationType={aggregationType}
+        />
+        <AdditionalHeaterChart
+          data={aggregatedData}
+          aggregationType={aggregationType}
+        />
+        <TemperatureChart
+          data={aggregatedData}
+          aggregationType={aggregationType}
+        />
       </div>
     </div>
   );

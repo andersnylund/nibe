@@ -1,26 +1,25 @@
-import { AggregatedDataPoint } from '../types/data';
 import {
-  LineChart,
-  Line,
-  BarChart,
   Bar,
+  BarChart,
+  CartesianGrid,
+  ComposedChart,
+  Legend,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  ComposedChart,
 } from 'recharts';
+import { AggregatedDataPoint, AggregationType } from '../types/data';
 import {
-  getEnergyProductionData,
-  getEnergyConsumptionData,
-  getAdditionalHeaterData,
-  getTemperatureData,
   formatPeriodLabel,
+  getAdditionalHeaterData,
+  getEnergyConsumptionData,
+  getEnergyProductionData,
+  getTemperatureData,
   getZeroColumns,
 } from '../utils/dataTransform';
-import { AggregationType } from '../types/data';
 
 interface ChartContainerProps {
   data: AggregatedDataPoint[];
@@ -36,7 +35,10 @@ const colors = {
   indoor: '#06b6d4', // cyan
 };
 
-export function EnergyProductionChart({ data, aggregationType }: ChartContainerProps) {
+export function EnergyProductionChart({
+  data,
+  aggregationType,
+}: ChartContainerProps) {
   const chartData = getEnergyProductionData(data);
   const zeroColumns = getZeroColumns(chartData);
 
@@ -62,7 +64,9 @@ export function EnergyProductionChart({ data, aggregationType }: ChartContainerP
           />
           <YAxis />
           <Tooltip
-            labelFormatter={(value) => formatPeriodLabel(value as string, aggregationType)}
+            labelFormatter={(value) =>
+              formatPeriodLabel(value as string, aggregationType)
+            }
             formatter={(value: number) => Math.round(value * 100) / 100}
           />
           <Legend verticalAlign="top" height={36} />
@@ -82,7 +86,10 @@ export function EnergyProductionChart({ data, aggregationType }: ChartContainerP
   );
 }
 
-export function EnergyConsumptionChart({ data, aggregationType }: ChartContainerProps) {
+export function EnergyConsumptionChart({
+  data,
+  aggregationType,
+}: ChartContainerProps) {
   const chartData = getEnergyConsumptionData(data);
   const zeroColumns = getZeroColumns(chartData);
 
@@ -108,7 +115,9 @@ export function EnergyConsumptionChart({ data, aggregationType }: ChartContainer
           />
           <YAxis />
           <Tooltip
-            labelFormatter={(value) => formatPeriodLabel(value as string, aggregationType)}
+            labelFormatter={(value) =>
+              formatPeriodLabel(value as string, aggregationType)
+            }
             formatter={(value: number) => Math.round(value * 100) / 100}
           />
           <Legend verticalAlign="top" height={36} />
@@ -128,7 +137,10 @@ export function EnergyConsumptionChart({ data, aggregationType }: ChartContainer
   );
 }
 
-export function AdditionalHeaterChart({ data, aggregationType }: ChartContainerProps) {
+export function AdditionalHeaterChart({
+  data,
+  aggregationType,
+}: ChartContainerProps) {
   const chartData = getAdditionalHeaterData(data);
   const zeroColumns = getZeroColumns(chartData);
 
@@ -141,7 +153,9 @@ export function AdditionalHeaterChart({ data, aggregationType }: ChartContainerP
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
-      <h3 className="text-xl font-semibold mb-4">Additional Heater Usage (kWh)</h3>
+      <h3 className="text-xl font-semibold mb-4">
+        Additional Heater Usage (kWh)
+      </h3>
       <ResponsiveContainer width="100%" height={300}>
         <BarChart data={chartData}>
           <CartesianGrid strokeDasharray="3 3" />
@@ -154,7 +168,9 @@ export function AdditionalHeaterChart({ data, aggregationType }: ChartContainerP
           />
           <YAxis />
           <Tooltip
-            labelFormatter={(value) => formatPeriodLabel(value as string, aggregationType)}
+            labelFormatter={(value) =>
+              formatPeriodLabel(value as string, aggregationType)
+            }
             formatter={(value: number) => Math.round(value * 100) / 100}
           />
           <Legend verticalAlign="top" height={36} />
@@ -167,13 +183,26 @@ export function AdditionalHeaterChart({ data, aggregationType }: ChartContainerP
   );
 }
 
-export function TemperatureChart({ data, aggregationType }: ChartContainerProps) {
+export function TemperatureChart({
+  data,
+  aggregationType,
+}: ChartContainerProps) {
   const chartData = getTemperatureData(data);
   const zeroColumns = getZeroColumns(chartData);
 
   const lineConfigs = [
-    { key: 'Outdoor', color: colors.outdoor, yAxisId: 'left', name: 'Outdoor Temp' },
-    { key: 'Indoor', color: colors.indoor, yAxisId: 'right', name: 'Indoor Temp' },
+    {
+      key: 'Outdoor',
+      color: colors.outdoor,
+      yAxisId: 'left',
+      name: 'Outdoor Temp',
+    },
+    {
+      key: 'Indoor',
+      color: colors.indoor,
+      yAxisId: 'right',
+      name: 'Indoor Temp',
+    },
   ].filter((config) => !zeroColumns.has(config.key));
 
   return (
@@ -189,17 +218,14 @@ export function TemperatureChart({ data, aggregationType }: ChartContainerProps)
             textAnchor="end"
             height={80}
           />
-          {!zeroColumns.has('Outdoor') && (
-            <YAxis yAxisId="left" />
-          )}
+          {!zeroColumns.has('Outdoor') && <YAxis yAxisId="left" />}
           {!zeroColumns.has('Indoor') && (
-            <YAxis
-              yAxisId="right"
-              orientation="right"
-            />
+            <YAxis yAxisId="right" orientation="right" />
           )}
           <Tooltip
-            labelFormatter={(value) => formatPeriodLabel(value as string, aggregationType)}
+            labelFormatter={(value) =>
+              formatPeriodLabel(value as string, aggregationType)
+            }
             formatter={(value: number) => Math.round(value * 100) / 100}
           />
           <Legend verticalAlign="top" height={36} />

@@ -25,12 +25,14 @@ export function FileUpload({ onDataParsed }: FileUploadProps) {
         const data = await parseNibeCsv(file);
         onDataParsed(data);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to parse CSV file');
+        setError(
+          err instanceof Error ? err.message : 'Failed to parse CSV file',
+        );
       } finally {
         setIsLoading(false);
       }
     },
-    [onDataParsed]
+    [onDataParsed],
   );
 
   const handleDrop = useCallback(
@@ -43,7 +45,7 @@ export function FileUpload({ onDataParsed }: FileUploadProps) {
         handleFile(file);
       }
     },
-    [handleFile]
+    [handleFile],
   );
 
   const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
@@ -63,7 +65,7 @@ export function FileUpload({ onDataParsed }: FileUploadProps) {
         handleFile(file);
       }
     },
-    [handleFile]
+    [handleFile],
   );
 
   return (

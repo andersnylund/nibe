@@ -3,7 +3,10 @@ import { AggregatedDataPoint } from '../types/data';
 /**
  * Format period label for display
  */
-export function formatPeriodLabel(period: string, aggregationType: 'weekly' | 'monthly'): string {
+export function formatPeriodLabel(
+  period: string,
+  aggregationType: 'weekly' | 'monthly',
+): string {
   if (aggregationType === 'weekly') {
     // Format: "2025-W12" -> "Week 12, 2025"
     const match = period.match(/^(\d{4})-W(\d{2})$/);
@@ -76,7 +79,9 @@ export function getTemperatureData(data: AggregatedDataPoint[]) {
  * Check which columns in the chart data are always zero
  * Returns a set of column names that have all zero values
  */
-export function getZeroColumns(chartData: Record<string, any>[]): Set<string> {
+export function getZeroColumns(
+  chartData: Record<string, unknown>[],
+): Set<string> {
   if (chartData.length === 0) {
     return new Set();
   }

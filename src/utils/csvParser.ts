@@ -45,41 +45,65 @@ export async function parseNibeCsv(file: File): Promise<NibeDataPoint[]> {
 
             // Extract column values - handle quoted column names
             // Find temperature columns with flexible matching (handle encoding issues)
-            const outdoorTempKey = Object.keys(row).find(key => 
-              key.toLowerCase().includes('outdoor') && key.toLowerCase().includes('temp')
+            const outdoorTempKey = Object.keys(row).find(
+              (key) =>
+                key.toLowerCase().includes('outdoor') &&
+                key.toLowerCase().includes('temp'),
             );
-            const indoorTempKey = Object.keys(row).find(key => 
-              key.toLowerCase().includes('indoor') && key.toLowerCase().includes('temp')
+            const indoorTempKey = Object.keys(row).find(
+              (key) =>
+                key.toLowerCase().includes('indoor') &&
+                key.toLowerCase().includes('temp'),
             );
-            const outdoorTempRaw = outdoorTempKey ? row[outdoorTempKey] : row['Outdoor temp [°C]'];
-            const indoorTempRaw = indoorTempKey ? row[indoorTempKey] : row['Indoor temp [°C]'];
+            const outdoorTempRaw = outdoorTempKey
+              ? row[outdoorTempKey]
+              : row['Outdoor temp [°C]'];
+            const indoorTempRaw = indoorTempKey
+              ? row[indoorTempKey]
+              : row['Indoor temp [°C]'];
             const outdoorTempParsed = parseNumber(outdoorTempRaw);
             const indoorTempParsed = parseNumber(indoorTempRaw);
             const dataPoint: NibeDataPoint = {
               date,
               heatingProduced: parseNumber(
-                row['Heating Produced Thermal energy (Inc. additional heater) [kWh]']
+                row[
+                  'Heating Produced Thermal energy (Inc. additional heater) [kWh]'
+                ],
               ),
               hotWaterProduced: parseNumber(
-                row['Hot water Produced Thermal energy (Inc. additional heater) [kWh]']
+                row[
+                  'Hot water Produced Thermal energy (Inc. additional heater) [kWh]'
+                ],
               ),
               poolProduced: parseNumber(
-                row['Pool Produced Thermal energy (Inc. additional heater) [kWh]']
+                row[
+                  'Pool Produced Thermal energy (Inc. additional heater) [kWh]'
+                ],
               ),
               coolingProduced: parseNumber(
-                row['Cooling Produced Thermal energy (Inc. additional heater) [kWh]']
+                row[
+                  'Cooling Produced Thermal energy (Inc. additional heater) [kWh]'
+                ],
               ),
               heatingConsumed: parseNumber(
-                row['Heating Consumed Electricity (Excl. additional heater) [kWh]']
+                row[
+                  'Heating Consumed Electricity (Excl. additional heater) [kWh]'
+                ],
               ),
               hotWaterConsumed: parseNumber(
-                row['Hot water Consumed Electricity (Excl. additional heater) [kWh]']
+                row[
+                  'Hot water Consumed Electricity (Excl. additional heater) [kWh]'
+                ],
               ),
               poolConsumed: parseNumber(
-                row['Pool Consumed Electricity (Excl. additional heater) [kWh]']
+                row[
+                  'Pool Consumed Electricity (Excl. additional heater) [kWh]'
+                ],
               ),
               coolingConsumed: parseNumber(
-                row['Cooling Consumed Electricity (Excl. additional heater) [kWh]']
+                row[
+                  'Cooling Consumed Electricity (Excl. additional heater) [kWh]'
+                ],
               ),
               heatingAddition: parseNumber(row['Heating Addition [kWh]']),
               hotWaterAddition: parseNumber(row['Hot water Addition [kWh]']),
@@ -98,7 +122,11 @@ export async function parseNibeCsv(file: File): Promise<NibeDataPoint[]> {
 
           resolve(dataPoints);
         } catch (error) {
-          reject(new Error(`Failed to parse CSV: ${error instanceof Error ? error.message : 'Unknown error'}`));
+          reject(
+            new Error(
+              `Failed to parse CSV: ${error instanceof Error ? error.message : 'Unknown error'}`,
+            ),
+          );
         }
       },
       error: (error: Error) => {

@@ -1,12 +1,22 @@
-import { format, getISOWeek, getYear, startOfMonth, startOfWeek } from 'date-fns';
-import { AggregatedDataPoint, AggregationType, NibeDataPoint } from '../types/data';
+import {
+  format,
+  getISOWeek,
+  getYear,
+  startOfMonth,
+  startOfWeek,
+} from 'date-fns';
+import {
+  AggregatedDataPoint,
+  AggregationType,
+  NibeDataPoint,
+} from '../types/data';
 
 /**
  * Aggregate data points by week or month
  */
 export function aggregateData(
   dataPoints: NibeDataPoint[],
-  aggregationType: AggregationType
+  aggregationType: AggregationType,
 ): AggregatedDataPoint[] {
   // Group data points by period
   const grouped = new Map<string, NibeDataPoint[]>();
@@ -36,31 +46,60 @@ export function aggregateData(
   const aggregated: AggregatedDataPoint[] = [];
 
   for (const [period, points] of grouped.entries()) {
-    const periodStart = aggregationType === 'weekly'
-      ? startOfWeek(points[0].date, { weekStartsOn: 1 })
-      : startOfMonth(points[0].date);
+    const periodStart =
+      aggregationType === 'weekly'
+        ? startOfWeek(points[0].date, { weekStartsOn: 1 })
+        : startOfMonth(points[0].date);
 
     // Calculate sums
-    const heatingProduced = points.reduce((sum, p) => sum + p.heatingProduced, 0);
-    const hotWaterProduced = points.reduce((sum, p) => sum + p.hotWaterProduced, 0);
+    const heatingProduced = points.reduce(
+      (sum, p) => sum + p.heatingProduced,
+      0,
+    );
+    const hotWaterProduced = points.reduce(
+      (sum, p) => sum + p.hotWaterProduced,
+      0,
+    );
     const poolProduced = points.reduce((sum, p) => sum + p.poolProduced, 0);
-    const coolingProduced = points.reduce((sum, p) => sum + p.coolingProduced, 0);
-    const totalProduced = heatingProduced + hotWaterProduced + poolProduced + coolingProduced;
+    const coolingProduced = points.reduce(
+      (sum, p) => sum + p.coolingProduced,
+      0,
+    );
+    const totalProduced =
+      heatingProduced + hotWaterProduced + poolProduced + coolingProduced;
 
-    const heatingConsumed = points.reduce((sum, p) => sum + p.heatingConsumed, 0);
-    const hotWaterConsumed = points.reduce((sum, p) => sum + p.hotWaterConsumed, 0);
+    const heatingConsumed = points.reduce(
+      (sum, p) => sum + p.heatingConsumed,
+      0,
+    );
+    const hotWaterConsumed = points.reduce(
+      (sum, p) => sum + p.hotWaterConsumed,
+      0,
+    );
     const poolConsumed = points.reduce((sum, p) => sum + p.poolConsumed, 0);
-    const coolingConsumed = points.reduce((sum, p) => sum + p.coolingConsumed, 0);
-    const totalConsumed = heatingConsumed + hotWaterConsumed + poolConsumed + coolingConsumed;
+    const coolingConsumed = points.reduce(
+      (sum, p) => sum + p.coolingConsumed,
+      0,
+    );
+    const totalConsumed =
+      heatingConsumed + hotWaterConsumed + poolConsumed + coolingConsumed;
 
-    const heatingAddition = points.reduce((sum, p) => sum + p.heatingAddition, 0);
-    const hotWaterAddition = points.reduce((sum, p) => sum + p.hotWaterAddition, 0);
+    const heatingAddition = points.reduce(
+      (sum, p) => sum + p.heatingAddition,
+      0,
+    );
+    const hotWaterAddition = points.reduce(
+      (sum, p) => sum + p.hotWaterAddition,
+      0,
+    );
     const poolAddition = points.reduce((sum, p) => sum + p.poolAddition, 0);
     const totalAddition = heatingAddition + hotWaterAddition + poolAddition;
 
     // Calculate averages
-    const avgOutdoorTemp = points.reduce((sum, p) => sum + p.outdoorTemp, 0) / points.length;
-    const avgIndoorTemp = points.reduce((sum, p) => sum + p.indoorTemp, 0) / points.length;
+    const avgOutdoorTemp =
+      points.reduce((sum, p) => sum + p.outdoorTemp, 0) / points.length;
+    const avgIndoorTemp =
+      points.reduce((sum, p) => sum + p.indoorTemp, 0) / points.length;
 
     // Calculate COP (Coefficient of Performance)
     const cop = totalConsumed > 0 ? totalProduced / totalConsumed : undefined;
