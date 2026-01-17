@@ -32,6 +32,7 @@ export function getEnergyProductionData(data: AggregatedDataPoint[]) {
     'Hot Water': point.hotWaterProduced,
     Pool: point.poolProduced,
     Cooling: point.coolingProduced,
+    Outdoor: point.avgOutdoorTemp,
   }));
 }
 
@@ -46,6 +47,7 @@ export function getEnergyConsumptionData(data: AggregatedDataPoint[]) {
     'Hot Water': point.hotWaterConsumed,
     Pool: point.poolConsumed,
     Cooling: point.coolingConsumed,
+    Outdoor: point.avgOutdoorTemp,
   }));
 }
 
@@ -60,6 +62,7 @@ export function getAdditionalHeaterData(data: AggregatedDataPoint[]) {
     'Hot Water': point.hotWaterAddition,
     Pool: point.poolAddition,
     Total: point.totalAddition,
+    Outdoor: point.avgOutdoorTemp,
   }));
 }
 

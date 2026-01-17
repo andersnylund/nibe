@@ -1,11 +1,9 @@
 import {
   Bar,
-  BarChart,
   CartesianGrid,
   ComposedChart,
   Legend,
   Line,
-  LineChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -49,11 +47,13 @@ export function EnergyProductionChart({
     { key: 'Cooling', color: colors.cooling },
   ].filter((config) => !zeroColumns.has(config.key));
 
+  const showOutdoor = !zeroColumns.has('Outdoor');
+
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
       <h3 className="text-xl font-semibold mb-4">Energy Production (kWh)</h3>
       <ResponsiveContainer width="100%" height={300}>
-        <LineChart data={chartData}>
+        <ComposedChart data={chartData}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
             dataKey="period"
@@ -62,17 +62,24 @@ export function EnergyProductionChart({
             textAnchor="end"
             height={80}
           />
-          <YAxis />
+          <YAxis yAxisId="left" />
+          {showOutdoor && (
+            <YAxis yAxisId="right" orientation="right" unit="°C" />
+          )}
           <Tooltip
             labelFormatter={(value) =>
               formatPeriodLabel(value as string, aggregationType)
             }
-            formatter={(value: number) => Math.round(value * 100) / 100}
+            formatter={(value: number, name: string) => [
+              Math.round(value * 100) / 100,
+              name === 'Outdoor' ? 'Outdoor Temp' : name,
+            ]}
           />
           <Legend verticalAlign="top" height={36} />
           {lineConfigs.map((config) => (
             <Line
               key={config.key}
+              yAxisId="left"
               type="monotone"
               dataKey={config.key}
               stroke={config.color}
@@ -80,7 +87,18 @@ export function EnergyProductionChart({
               dot={{ r: 3 }}
             />
           ))}
-        </LineChart>
+          {showOutdoor && (
+            <Line
+              yAxisId="right"
+              type="monotone"
+              dataKey="Outdoor"
+              stroke={colors.outdoor}
+              strokeWidth={2}
+              dot={{ r: 3 }}
+              name="Outdoor Temp"
+            />
+          )}
+        </ComposedChart>
       </ResponsiveContainer>
     </div>
   );
@@ -100,11 +118,13 @@ export function EnergyConsumptionChart({
     { key: 'Cooling', color: colors.cooling },
   ].filter((config) => !zeroColumns.has(config.key));
 
+  const showOutdoor = !zeroColumns.has('Outdoor');
+
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
       <h3 className="text-xl font-semibold mb-4">Energy Consumption (kWh)</h3>
       <ResponsiveContainer width="100%" height={300}>
-        <LineChart data={chartData}>
+        <ComposedChart data={chartData}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
             dataKey="period"
@@ -113,17 +133,24 @@ export function EnergyConsumptionChart({
             textAnchor="end"
             height={80}
           />
-          <YAxis />
+          <YAxis yAxisId="left" />
+          {showOutdoor && (
+            <YAxis yAxisId="right" orientation="right" unit="°C" />
+          )}
           <Tooltip
             labelFormatter={(value) =>
               formatPeriodLabel(value as string, aggregationType)
             }
-            formatter={(value: number) => Math.round(value * 100) / 100}
+            formatter={(value: number, name: string) => [
+              Math.round(value * 100) / 100,
+              name === 'Outdoor' ? 'Outdoor Temp' : name,
+            ]}
           />
           <Legend verticalAlign="top" height={36} />
           {lineConfigs.map((config) => (
             <Line
               key={config.key}
+              yAxisId="left"
               type="monotone"
               dataKey={config.key}
               stroke={config.color}
@@ -131,7 +158,18 @@ export function EnergyConsumptionChart({
               dot={{ r: 3 }}
             />
           ))}
-        </LineChart>
+          {showOutdoor && (
+            <Line
+              yAxisId="right"
+              type="monotone"
+              dataKey="Outdoor"
+              stroke={colors.outdoor}
+              strokeWidth={2}
+              dot={{ r: 3 }}
+              name="Outdoor Temp"
+            />
+          )}
+        </ComposedChart>
       </ResponsiveContainer>
     </div>
   );
@@ -151,13 +189,15 @@ export function AdditionalHeaterChart({
     { key: 'Total', color: '#6b7280' },
   ].filter((config) => !zeroColumns.has(config.key));
 
+  const showOutdoor = !zeroColumns.has('Outdoor');
+
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
       <h3 className="text-xl font-semibold mb-4">
         Additional Heater Usage (kWh)
       </h3>
       <ResponsiveContainer width="100%" height={300}>
-        <BarChart data={chartData}>
+        <ComposedChart data={chartData}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
             dataKey="period"
@@ -166,18 +206,40 @@ export function AdditionalHeaterChart({
             textAnchor="end"
             height={80}
           />
-          <YAxis />
+          <YAxis yAxisId="left" />
+          {showOutdoor && (
+            <YAxis yAxisId="right" orientation="right" unit="°C" />
+          )}
           <Tooltip
             labelFormatter={(value) =>
               formatPeriodLabel(value as string, aggregationType)
             }
-            formatter={(value: number) => Math.round(value * 100) / 100}
+            formatter={(value: number, name: string) => [
+              Math.round(value * 100) / 100,
+              name === 'Outdoor' ? 'Outdoor Temp' : name,
+            ]}
           />
           <Legend verticalAlign="top" height={36} />
           {barConfigs.map((config) => (
-            <Bar key={config.key} dataKey={config.key} fill={config.color} />
+            <Bar
+              key={config.key}
+              yAxisId="left"
+              dataKey={config.key}
+              fill={config.color}
+            />
           ))}
-        </BarChart>
+          {showOutdoor && (
+            <Line
+              yAxisId="right"
+              type="monotone"
+              dataKey="Outdoor"
+              stroke={colors.outdoor}
+              strokeWidth={2}
+              dot={{ r: 3 }}
+              name="Outdoor Temp"
+            />
+          )}
+        </ComposedChart>
       </ResponsiveContainer>
     </div>
   );
