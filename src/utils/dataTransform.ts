@@ -49,9 +49,9 @@ export function getEnergyConsumptionData(data: AggregatedDataPoint[]) {
   return data.map((point) => ({
     period: point.period,
     date: point.date,
-    Heating: point.heatingConsumed,
-    'Hot Water': point.hotWaterConsumed,
-    Pool: point.poolConsumed,
+    Heating: point.heatingConsumed + point.heatingAddition,
+    'Hot Water': point.hotWaterConsumed + point.hotWaterAddition,
+    Pool: point.poolConsumed + point.poolAddition,
     Cooling: point.coolingConsumed,
     Outdoor: point.avgOutdoorTemp,
   }));

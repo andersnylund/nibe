@@ -50,8 +50,6 @@ export function StatsSummary({ data }: StatsSummaryProps) {
   // Calculate breakdown by type
   const heatingProduced = data.reduce((sum, d) => sum + d.heatingProduced, 0);
   const hotWaterProduced = data.reduce((sum, d) => sum + d.hotWaterProduced, 0);
-  const heatingConsumed = data.reduce((sum, d) => sum + d.heatingConsumed, 0);
-  const hotWaterConsumed = data.reduce((sum, d) => sum + d.hotWaterConsumed, 0);
 
   // Calculate average COP (weighted by consumption)
   const avgCOP = totalConsumed > 0 ? totalProduced / totalConsumed : 0;
@@ -77,8 +75,8 @@ export function StatsSummary({ data }: StatsSummaryProps) {
         />
         <StatCard
           title="Total Energy Consumed"
-          value={`${formatNumber(totalConsumed)} kWh`}
-          subtitle={`Heating: ${formatNumber(heatingConsumed)} | HW: ${formatNumber(hotWaterConsumed)}`}
+          value={`${formatNumber(totalConsumed + totalAddition)} kWh`}
+          subtitle={`Compressor: ${formatNumber(totalConsumed)} | Add: ${formatNumber(totalAddition)}`}
           color="text-blue-600"
         />
         <StatCard

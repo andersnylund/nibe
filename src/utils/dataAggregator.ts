@@ -108,7 +108,9 @@ export function aggregateData(
       points.reduce((sum, p) => sum + p.indoorTemp, 0) / points.length;
 
     // Calculate COP (Coefficient of Performance)
-    const cop = totalConsumed > 0 ? totalProduced / totalConsumed : undefined;
+    // Include additional heater in consumption for true system efficiency
+    const totalElectricity = totalConsumed + totalAddition;
+    const cop = totalElectricity > 0 ? totalProduced / totalElectricity : undefined;
 
     aggregated.push({
       period,
